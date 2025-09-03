@@ -1,0 +1,24 @@
+services:
+  app-prod:
+    build:
+      dockerfile: Dockerfile
+      context: .
+        # Only will build production stage from our dockerfile
+      target: production
+    ports:
+      - "${APP_PORT}:3000"
+  app-dev:
+    build:
+      dockerfile: Dockerfile
+      context: .
+        # Only will build development stage from our dockerfile
+      target: development
+    volumes:
+      - .:/home/go/sourcecode
+      - ~/.ssh:/home/go/.ssh:ro
+      - ../:/out
+    ports:
+      - "6464:6464"
+      - "3000:3000"
+      - "6767:6767"
+    command: godoc -http=:6464
